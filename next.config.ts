@@ -18,10 +18,6 @@ const nextConfig: NextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
-  // Disable static generation for demo pages to avoid build errors
-  async generateStaticParams() {
-    return [];
-  },
   output: 'standalone',
 };
 
