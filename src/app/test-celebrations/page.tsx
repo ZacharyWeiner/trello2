@@ -4,7 +4,6 @@ export const dynamic = 'force-dynamic';
 
 import React from 'react';
 import { CelebrationSystem, celebrate, CelebrationTemplates } from '@/components/celebrations/CelebrationSystem';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -55,8 +54,7 @@ export default function TestCelebrationsPage() {
   };
 
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
@@ -257,6 +255,5 @@ export default function TestCelebrationsPage() {
         {/* Celebration System Component */}
         <CelebrationSystem />
       </div>
-    </ProtectedRoute>
   );
 } 
