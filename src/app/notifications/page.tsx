@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { BoardBackground, BoardTemplate } from '@/types';

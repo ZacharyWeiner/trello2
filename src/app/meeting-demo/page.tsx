@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react';
 import { MeetingNotesToTasks } from '@/components/meeting/MeetingNotesToTasks';
 import { Brain, FileText, Zap, Target, Users, Clock, CheckCircle, MessageSquare, AlertTriangle } from 'lucide-react';

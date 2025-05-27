@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import React from 'react';
 import { CelebrationSystem, celebrate, CelebrationTemplates } from '@/components/celebrations/CelebrationSystem';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';

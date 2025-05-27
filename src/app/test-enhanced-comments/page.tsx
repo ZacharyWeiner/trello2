@@ -206,16 +206,18 @@ export default function TestEnhancedCommentsPage() {
             </div>
 
             {/* Enhanced Comment Section */}
-            <EnhancedCommentSection
-              comments={comments}
-              currentUserId={user?.uid || 'demo-user'}
-              onCommentsChange={handleCommentsChange}
-              boardMembers={mockBoardMembers}
-              cardId="demo-card"
-              cardTitle="Implement Enhanced Comments System"
-              boardId="demo-board"
-              boardTitle="Demo Board"
-            />
+            {user && (
+              <EnhancedCommentSection
+                comments={comments}
+                currentUserId={user.uid || 'demo-user'}
+                onCommentsChange={handleCommentsChange}
+                boardMembers={mockBoardMembers}
+                cardId="demo-card"
+                cardTitle="Implement Enhanced Comments System"
+                boardId="demo-board"
+                boardTitle="Demo Board"
+              />
+            )}
           </div>
 
           {/* Instructions */}
