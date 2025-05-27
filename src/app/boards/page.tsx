@@ -8,15 +8,14 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import { Board, BoardBackground, BoardTemplate } from '@/types';
 import { getUserBoards, createBoard, migrateAllUserBoards, deleteBoard } from '@/services/boardService';
 import { createBoardFromTemplate } from '@/services/boardTemplateService';
-import { Plus, Loader2, Users, Crown, Eye, User, MoreVertical, Trash2, Trophy, BookOpen, Sparkles, Target, TrendingUp, Bell } from 'lucide-react';
-import { NotificationBell } from '@/components/notifications/NotificationBell';
 import { NotificationService } from '@/services/notificationService';
-import { Notification } from '@/types';
+import { Plus, Loader2, Users, Crown, Eye, User, MoreVertical, Trash2, Trophy, BookOpen, Sparkles, Target, TrendingUp, Bell } from 'lucide-react';
 import Link from 'next/link';
 import { CreateBoardModal } from '@/components/boards/CreateBoardModal';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { MobileLayout, useResponsive } from '@/components/mobile/MobileLayout';
 import { motion, AnimatePresence } from 'framer-motion';
+import { NotificationBell } from '@/components/notifications/NotificationBell';
 
 export default function BoardsPage() {
   const { user } = useAuthContext();
@@ -27,7 +26,6 @@ export default function BoardsPage() {
   const [migrating, setMigrating] = useState(false);
   const [boardMenuOpen, setBoardMenuOpen] = useState<string | null>(null);
   const [deletingBoard, setDeletingBoard] = useState<string | null>(null);
-  const [recentNotifications, setRecentNotifications] = useState<Notification[]>([]);
 
   // Responsive hook for mobile detection
   const { isMobile, isTablet } = useResponsive();
@@ -48,10 +46,6 @@ export default function BoardsPage() {
       // Then load the boards
       const userBoards = await getUserBoards(user.uid);
       setBoards(userBoards);
-
-      // Load recent notifications
-      const notifications = await NotificationService.getUserNotifications(user.uid, 3);
-      setRecentNotifications(notifications);
     } catch (error) {
       console.error('Error loading boards:', error);
     } finally {
@@ -119,6 +113,27 @@ export default function BoardsPage() {
       alert('Failed to delete board. Please try again.');
     } finally {
       setDeletingBoard(null);
+    }
+  };
+
+  const handleTestNotification = async () => {
+    if (!user) return;
+
+    try {
+      await NotificationService.createMentionNotification(
+        user.uid, // Send to yourself
+        'test-user-123',
+        'Test System',
+        'test-card-123',
+        'Sample Task Card',
+        'test-board-123',
+        'Demo Board',
+        'This is a test notification to verify the notification system is working! 🎉'
+      );
+      alert('✅ Test notification sent! Check the bell icon to see it.');
+    } catch (error) {
+      console.error('Error sending test notification:', error);
+      alert('❌ Failed to send test notification. Check console for details.');
     }
   };
 
@@ -208,8 +223,32 @@ export default function BoardsPage() {
           </div>
           
           <div className="flex items-center gap-3">
-            {/* Notification Bell */}
+            {/* Notifications */}
             <NotificationBell />
+            
+            {/* Test Notification Button */}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <button
+                onClick={handleTestNotification}
+                className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all text-sm"
+                title="Send a test notification to yourself"
+              >
+                <Bell className="h-4 w-4" />
+                <span>Test</span>
+              </button>
+            </motion.div>
+            
+            {/* Create Board Button */}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all"
+              >
+                <Plus className="h-4 w-4" />
+                <span>New Board</span>
+              </button>
+            </motion.div>
+            
             {/* Leaderboard Link */}
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
@@ -234,53 +273,6 @@ export default function BoardsPage() {
             </div>
           </div>
         </motion.div>
-
-        {/* Recent Notifications */}
-        {recentNotifications.length > 0 && (
-          <motion.div
-            className="bg-white rounded-xl shadow-lg p-6 mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Bell className="h-5 w-5 text-blue-500" />
-                <h2 className="text-lg font-semibold text-gray-900">Recent Notifications</h2>
-              </div>
-              <Link 
-                href="/notifications"
-                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-              >
-                View all
-              </Link>
-            </div>
-            <div className="space-y-3">
-              {recentNotifications.slice(0, 3).map((notification) => (
-                <div key={notification.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className={`w-2 h-2 rounded-full mt-2 ${notification.read ? 'bg-gray-300' : 'bg-blue-500'}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900">
-                      {notification.title}
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {notification.message}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
-                      <span>{new Date(notification.createdAt).toLocaleDateString()}</span>
-                      {notification.data?.boardTitle && (
-                        <>
-                          <span>•</span>
-                          <span>{notification.data.boardTitle}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
 
         {/* Board Stats */}
         <motion.div
