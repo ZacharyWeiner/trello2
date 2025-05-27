@@ -157,14 +157,14 @@ A modern, feature-rich Trello clone built with Next.js 14, TypeScript, and Fireb
 ### **Installation**
 
 1. **Clone the repository**
-   ```bash
+```bash
    git clone https://github.com/yourusername/trello-clone.git
-   cd trello-clone
+cd trello-clone
    ```
 
 2. **Install dependencies**
    ```bash
-   npm install
+npm install
    # or
    yarn install
    ```
@@ -176,11 +176,11 @@ A modern, feature-rich Trello clone built with Next.js 14, TypeScript, and Fireb
 
 4. **Configure environment variables**
    ```bash
-   cp .env.example .env.local
+cp .env.example .env.local
    ```
    
    Add your Firebase configuration:
-   ```env
+```env
    NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
    NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id

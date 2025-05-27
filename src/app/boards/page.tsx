@@ -2,6 +2,8 @@
 
 export const dynamic = 'force-dynamic';
 
+// 🔧 Pipeline Test - Auto-deploy verification at 2024-12-27 14:30
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/contexts/AuthContext';
