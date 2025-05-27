@@ -1,5 +1,8 @@
 # 🚀 Trello Clone - Advanced Project Management Platform
 
+> **🔗 Live Demo**: [https://trello2-two.vercel.app](https://trello2-two.vercel.app)
+> **📅 Last Updated**: December 2024 - Git-to-Vercel Pipeline Test
+
 A modern, feature-rich Trello clone built with Next.js 14, TypeScript, and Firebase. This comprehensive project management platform goes beyond basic Kanban boards with advanced features like Gantt Chart visualization, Smart Meeting Notes parsing, celebration systems, PWA capabilities, and offline functionality.
 
 ## 🌟 **Live Demo**
@@ -660,6 +663,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ using Next.js 14, TypeScript, Firebase, and modern web technologies.**
+**Built with ❤️ ZackWins using Next.js 14, TypeScript, Firebase, and modern web technologies.**
 
 *Last updated: December 2024* 
