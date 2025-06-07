@@ -53,7 +53,7 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
   onTasksCreated
 }) => {
   const [meetingNote, setMeetingNote] = useState<MeetingNote>({
-    id: `meeting-${Date.now()}`,
+    id: `meeting-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     title: '',
     content: '',
     date: new Date(),
@@ -177,7 +177,7 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
     );
 
     const cards: Card[] = tasksToCreate.map((task, index) => ({
-      id: `card-${Date.now()}-${index}`,
+      id: `card-${Date.now()}-${index}-${Math.random().toString(36).substr(2, 6)}`,
       title: task.text,
       description: `Generated from meeting: ${meetingNote.title}\n\nContext: ${task.context}`,
       listId: getTargetListId(task),
@@ -264,6 +264,36 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
 
   return (
     <AnimatePresence>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          /* Force visible text for all meeting form inputs */
+          .meeting-form input,
+          .meeting-form textarea,
+          .meeting-form select {
+            color: #1f2937 !important;
+            background-color: #ffffff !important;
+          }
+          
+          .meeting-form input::placeholder,
+          .meeting-form textarea::placeholder {
+            color: #6b7280 !important;
+            opacity: 1 !important;
+          }
+          
+          /* Specific fix for meeting notes textarea */
+          .meeting-notes-input {
+            color: #1f2937 !important;
+            background-color: #ffffff !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+          }
+          
+          .meeting-notes-input::placeholder {
+            color: #6b7280 !important;
+            opacity: 1 !important;
+          }
+        `
+      }} />
       <motion.div
         className="fixed inset-0 z-50 flex items-center justify-center p-4"
         initial={{ opacity: 0 }}
@@ -343,7 +373,7 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
             {activeTab === 'input' && (
               <div className="h-full flex">
                 {/* Input Section */}
-                <div className="flex-1 p-6">
+                <div className="flex-1 p-6 meeting-form">
                   <div className="space-y-4">
                     {/* Meeting Info */}
                     <div className="grid grid-cols-2 gap-4">
@@ -357,6 +387,11 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
                           onChange={(e) => setMeetingNote(prev => ({ ...prev, title: e.target.value }))}
                           placeholder="e.g., Sprint Planning Meeting"
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          style={{ 
+                            color: '#1f2937', 
+                            backgroundColor: '#ffffff',
+                            fontSize: '14px',
+                          }}
                         />
                       </div>
                       
@@ -371,6 +406,11 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
                             meetingType: e.target.value as MeetingNote['meetingType'] 
                           }))}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          style={{ 
+                            color: '#1f2937', 
+                            backgroundColor: '#ffffff',
+                            fontSize: '14px',
+                          }}
                         >
                           <option value="general">General</option>
                           <option value="standup">Standup</option>
@@ -399,10 +439,10 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
                                   : [...prev.attendees, member.displayName]
                               }));
                             }}
-                            className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                               meetingNote.attendees.includes(member.displayName)
-                                ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                                : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
+                                ? 'bg-blue-100 text-blue-800 border border-blue-200'
+                                : 'bg-gray-100 text-gray-800 border border-gray-200 hover:bg-gray-200'
                             }`}
                           >
                             {member.displayName}
@@ -429,7 +469,13 @@ Examples of what I can extract:
 • 'We decided to use React for the frontend'
 • 'Blocked by missing database credentials'
 • 'Follow up with the client next week'"
-                        className="w-full min-h-[300px] px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                        className="w-full min-h-[300px] px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none meeting-notes-input"
+                        style={{ 
+                          color: '#1f2937',
+                          backgroundColor: '#ffffff',
+                          fontSize: '14px',
+                          lineHeight: '1.5',
+                        }}
                       />
                     </div>
                   </div>
@@ -530,7 +576,7 @@ Examples of what I can extract:
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Decisions</h3>
                       <div className="space-y-2">
                         {analysis.keyDecisions.map((decision, index) => (
-                          <div key={index} className="flex items-start gap-2">
+                          <div key={`decision-${index}`} className="flex items-start gap-2">
                             <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
                             <p className="text-sm text-gray-700">{decision}</p>
                           </div>
@@ -545,7 +591,7 @@ Examples of what I can extract:
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">Questions & Clarifications</h3>
                       <div className="space-y-2">
                         {analysis.questions.map((question, index) => (
-                          <div key={index} className="flex items-start gap-2">
+                          <div key={`question-${index}`} className="flex items-start gap-2">
                             <MessageSquare className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                             <p className="text-sm text-gray-700">{question}</p>
                           </div>
@@ -615,7 +661,7 @@ Examples of what I can extract:
                                       setEditingTask(null);
                                     }
                                   }}
-                                  className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
+                                  className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm text-gray-900 placeholder-gray-500 placeholder-visible"
                                   autoFocus
                                 />
                                 <button

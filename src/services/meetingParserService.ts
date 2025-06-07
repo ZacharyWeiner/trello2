@@ -77,7 +77,7 @@ export class MeetingParserService {
     const processingTime = Date.now() - startTime;
     
     return {
-      id: `analysis-${note.id}`,
+      id: `analysis-${note.id}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
       meetingNoteId: note.id,
       extractedTasks,
       keyDecisions,
@@ -113,7 +113,7 @@ export class MeetingParserService {
           
           if (taskText.length > 10) { // Minimum task length
             const task: ParsedTask = {
-              id: `task-${Date.now()}-${index}`,
+              id: `task-${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`,
               text: taskText,
               context: sentence,
               confidence: this.calculateConfidence(sentence, rule, taskText),
@@ -720,7 +720,7 @@ export class MeetingParserService {
       const suggestedAssignee = this.suggestAssignee(task, boardMembers);
       if (suggestedAssignee) {
         suggestions.push({
-          id: `assignee-${task.id}`,
+          id: `assignee-${task.id}-${Math.random().toString(36).substr(2, 6)}`,
           type: 'assignee',
           suggestion: suggestedAssignee.name,
           confidence: suggestedAssignee.confidence,
@@ -735,7 +735,7 @@ export class MeetingParserService {
       const suggestedDueDate = this.suggestDueDate(task);
       if (suggestedDueDate) {
         suggestions.push({
-          id: `due-date-${task.id}`,
+          id: `due-date-${task.id}-${Math.random().toString(36).substr(2, 6)}`,
           type: 'due_date',
           suggestion: suggestedDueDate.date,
           confidence: suggestedDueDate.confidence,

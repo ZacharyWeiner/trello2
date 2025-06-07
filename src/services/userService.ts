@@ -28,7 +28,9 @@ export const createUserProfile = async (
     emailNotifications: true,
     pushNotifications: true,
     theme: 'light',
-    language: 'en'
+    language: 'en',
+    compactMode: false,
+    animationsEnabled: true
   };
 
   const profileData = {

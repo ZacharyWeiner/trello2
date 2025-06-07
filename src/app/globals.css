@@ -661,3 +661,177 @@ textarea,
     padding: 0 !important;
   }
 }
+
+/* Better placeholder text visibility - More specific targeting */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #4b5563 !important; /* gray-600 - darker for better visibility */
+  opacity: 1 !important;
+  font-weight: 400 !important;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder,
+select::-webkit-input-placeholder {
+  color: #4b5563 !important; /* gray-600 - darker for better visibility */
+  opacity: 1 !important;
+  font-weight: 400 !important;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder,
+select::-moz-placeholder {
+  color: #4b5563 !important; /* gray-600 - darker for better visibility */
+  opacity: 1 !important;
+  font-weight: 400 !important;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder,
+select:-ms-input-placeholder {
+  color: #4b5563 !important; /* gray-600 - darker for better visibility */
+  opacity: 1 !important;
+  font-weight: 400 !important;
+}
+
+/* Ensure form inputs have proper text color */
+input, textarea, select {
+  color: #111827 !important; /* gray-900 */
+  background-color: #ffffff !important; /* white background */
+}
+
+/* Specific targeting for meeting notes components */
+.meeting-notes-textarea,
+.meeting-notes-textarea::placeholder,
+.meeting-notes-textarea::-webkit-input-placeholder,
+.meeting-notes-textarea::-moz-placeholder,
+.meeting-notes-textarea:-ms-input-placeholder {
+  color: #4b5563 !important; /* gray-600 - darker for better visibility */
+  opacity: 1 !important;
+  font-style: normal !important;
+  line-height: 1.6 !important;
+  font-weight: 400 !important;
+}
+
+.meeting-notes-textarea {
+  color: #111827 !important; /* Ensure typed text is dark */
+  background-color: #ffffff !important; /* Ensure white background */
+}
+
+.meeting-notes-textarea:focus::placeholder,
+.meeting-notes-textarea:focus::-webkit-input-placeholder,
+.meeting-notes-textarea:focus::-moz-placeholder,
+.meeting-notes-textarea:focus:-ms-input-placeholder {
+  color: #6b7280 !important; /* gray-500 - slightly lighter when focused */
+  opacity: 0.8 !important;
+}
+
+/* Dark mode placeholder adjustments */
+.dark ::placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark ::-webkit-input-placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark ::-moz-placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark :-ms-input-placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark input, .dark textarea, .dark select {
+  color: #f9fafb !important; /* gray-50 */
+}
+
+/* Force visible placeholder class */
+.placeholder-visible::placeholder {
+  color: #4b5563 !important; /* gray-600 - darker for better visibility */
+  opacity: 1 !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+.placeholder-visible::-webkit-input-placeholder {
+  color: #4b5563 !important;
+  opacity: 1 !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+.placeholder-visible::-moz-placeholder {
+  color: #4b5563 !important;
+  opacity: 1 !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+.placeholder-visible:-ms-input-placeholder {
+  color: #4b5563 !important;
+  opacity: 1 !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+/* Dark mode placeholder adjustments */
+.dark .placeholder-visible::placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark .placeholder-visible::-webkit-input-placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark .placeholder-visible::-moz-placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark .placeholder-visible:-ms-input-placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+.dark .placeholder-visible input, .dark .placeholder-visible textarea, .dark .placeholder-visible select {
+  color: #f9fafb !important; /* gray-50 */
+}
+
+/* Dark mode placeholder adjustments */
+.dark .placeholder-visible input, .dark .placeholder-visible textarea, .dark .placeholder-visible select {
+  color: #f9fafb !important; /* gray-50 */
+}
+
+/* Additional strong overrides for meeting form inputs */
+.meeting-form input,
+.meeting-form input:focus,
+.meeting-form textarea,
+.meeting-form textarea:focus,
+.meeting-form select,
+.meeting-form select:focus {
+  color: #111827 !important; /* Ensure very dark text */
+  background-color: #ffffff !important; /* Ensure white background */
+}
+
+.meeting-form input::placeholder,
+.meeting-form textarea::placeholder {
+  color: #6b7280 !important; /* Ensure visible gray placeholder */
+  opacity: 1 !important;
+  font-weight: 400 !important;
+}
+
+/* Force override any conflicting styles */
+.meeting-notes-input,
+.meeting-notes-input:focus {
+  color: #111827 !important;
+  background-color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+.meeting-notes-input::placeholder {
+  color: #6b7280 !important;
+  opacity: 1 !important;
+  font-weight: 400 !important;
+}

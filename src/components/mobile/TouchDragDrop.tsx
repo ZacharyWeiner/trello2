@@ -38,7 +38,7 @@ export const TouchDragDrop: React.FC<TouchDragDropProps> = ({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const scale = useTransform([x, y], ([latestX, latestY]) => {
-    const distance = Math.sqrt(latestX * latestX + latestY * latestY);
+    const distance = Math.sqrt((latestX as number) * (latestX as number) + (latestY as number) * (latestY as number));
     return isDragging ? Math.min(1.1, 1 + distance / 1000) : 1;
   });
 
