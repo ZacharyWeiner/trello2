@@ -7,6 +7,7 @@ import {
   ProcessingStats 
 } from '@/types/meeting';
 import { Board, BoardMember } from '@/types';
+import { createSafeKey, createContentKey, createArrayItemKey } from '@/utils/keyUtils';
 
 export class MeetingParserService {
   private static readonly ACTION_VERBS = [
@@ -77,7 +78,7 @@ export class MeetingParserService {
     const processingTime = Date.now() - startTime;
     
     return {
-      id: `analysis-${note.id}-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+      id: createSafeKey(`analysis-${note.id}`, 'analysis'),
       meetingNoteId: note.id,
       extractedTasks,
       keyDecisions,
@@ -104,16 +105,16 @@ export class MeetingParserService {
     const tasks: ParsedTask[] = [];
     const memberNames = boardMembers.map(m => m.displayName.toLowerCase());
     
-    sentences.forEach((sentence, index) => {
+    sentences.forEach((sentence, sentenceIndex) => {
       // Apply each extraction rule
-      rules.forEach(rule => {
+      rules.forEach((rule, ruleIndex) => {
         const matches = sentence.match(rule.pattern);
         if (matches) {
           const taskText = this.cleanTaskText(matches[0]);
           
           if (taskText.length > 10) { // Minimum task length
             const task: ParsedTask = {
-              id: `task-${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`,
+              id: createContentKey(taskText, 'task', sentenceIndex + ruleIndex),
               text: taskText,
               context: sentence,
               confidence: this.calculateConfidence(sentence, rule, taskText),
@@ -720,7 +721,7 @@ export class MeetingParserService {
       const suggestedAssignee = this.suggestAssignee(task, boardMembers);
       if (suggestedAssignee) {
         suggestions.push({
-          id: `assignee-${task.id}-${Math.random().toString(36).substr(2, 6)}`,
+          id: createSafeKey(`assignee-${task.id}`, 'suggestion'),
           type: 'assignee',
           suggestion: suggestedAssignee.name,
           confidence: suggestedAssignee.confidence,
@@ -735,7 +736,7 @@ export class MeetingParserService {
       const suggestedDueDate = this.suggestDueDate(task);
       if (suggestedDueDate) {
         suggestions.push({
-          id: `due-date-${task.id}-${Math.random().toString(36).substr(2, 6)}`,
+          id: createSafeKey(`due-date-${task.id}`, 'suggestion'),
           type: 'due_date',
           suggestion: suggestedDueDate.date,
           confidence: suggestedDueDate.confidence,

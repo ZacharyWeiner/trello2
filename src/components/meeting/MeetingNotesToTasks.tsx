@@ -25,9 +25,11 @@ import {
   Filter,
   Download,
   Upload,
-  Settings
+  Settings,
+  ChevronRight
 } from 'lucide-react';
 import { MeetingParserService } from '@/services/meetingParserService';
+import { createSafeKey, createContentKey, createArrayItemKey, debugKey } from '@/utils/keyUtils';
 import { 
   MeetingNote, 
   ParsedTask, 
@@ -177,7 +179,7 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
     );
 
     const cards: Card[] = tasksToCreate.map((task, index) => ({
-      id: `card-${Date.now()}-${index}-${Math.random().toString(36).substr(2, 6)}`,
+      id: createSafeKey(`card-${task.id}`, 'card', index),
       title: task.text,
       description: `Generated from meeting: ${meetingNote.title}\n\nContext: ${task.context}`,
       listId: getTargetListId(task),
@@ -258,6 +260,11 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
       case 'blocker': return <AlertTriangle className="h-4 w-4" />;
       default: return <FileText className="h-4 w-4" />;
     }
+  };
+
+  // Helper function to generate unique keys - now using robust key utilities
+  const generateUniqueKey = (content: string, type: string, index: number): string => {
+    return createContentKey(content, type, index);
   };
 
   if (!isOpen) return null;
@@ -349,21 +356,16 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
               { id: 'tasks', label: 'Generated Tasks', icon: Target }
             ].map(tab => (
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors ${
+                key={createSafeKey(`meeting-tab-${tab.id}`, 'tab')}
+                onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === tab.id
-                    ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <tab.icon className="h-4 w-4" />
+                <tab.icon className="h-4 w-4 mr-2 inline" />
                 {tab.label}
-                {tab.id === 'tasks' && analysis && (
-                  <span className="ml-1 px-2 py-0.5 bg-blue-100 text-blue-600 rounded-full text-xs">
-                    {analysis.extractedTasks.length}
-                  </span>
-                )}
               </button>
             ))}
           </div>
@@ -427,9 +429,9 @@ export const MeetingNotesToTasks: React.FC<MeetingNotesToTasksProps> = ({
                         Attendees
                       </label>
                       <div className="flex flex-wrap gap-2">
-                        {board.members.map(member => (
+                        {board.members.map((member, index) => (
                           <button
-                            key={member.userId}
+                            key={createArrayItemKey(member, index, 'userId', 'attendee')}
                             onClick={() => {
                               const isSelected = meetingNote.attendees.includes(member.displayName);
                               setMeetingNote(prev => ({
@@ -488,7 +490,7 @@ Examples of what I can extract:
                     
                     <div className="space-y-3">
                       {analysis.extractedTasks.slice(0, 3).map(task => (
-                        <div key={task.id} className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div key={createSafeKey(`preview-task-${task.id}`, 'preview')} className="bg-white p-3 rounded-lg border border-gray-200">
                           <div className="flex items-start gap-2">
                             {getActionTypeIcon(task.actionType)}
                             <div className="flex-1 min-w-0">
@@ -576,7 +578,7 @@ Examples of what I can extract:
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Decisions</h3>
                       <div className="space-y-2">
                         {analysis.keyDecisions.map((decision, index) => (
-                          <div key={`decision-${index}`} className="flex items-start gap-2">
+                          <div key={createSafeKey(decision, 'decision')} className="flex items-start gap-2">
                             <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
                             <p className="text-sm text-gray-700">{decision}</p>
                           </div>
@@ -591,7 +593,7 @@ Examples of what I can extract:
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">Questions & Clarifications</h3>
                       <div className="space-y-2">
                         {analysis.questions.map((question, index) => (
-                          <div key={`question-${index}`} className="flex items-start gap-2">
+                          <div key={createSafeKey(question, 'question')} className="flex items-start gap-2">
                             <MessageSquare className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                             <p className="text-sm text-gray-700">{question}</p>
                           </div>
@@ -627,7 +629,7 @@ Examples of what I can extract:
                   <div className="space-y-3">
                     {analysis.extractedTasks.map(task => (
                       <motion.div
-                        key={task.id}
+                        key={createSafeKey(task.id, 'task')}
                         className={`bg-white p-4 rounded-lg border-2 transition-all cursor-pointer ${
                           selectedTasks.has(task.id)
                             ? 'border-blue-300 bg-blue-50'
@@ -742,7 +744,7 @@ Examples of what I can extract:
                     
                     <div className="space-y-3">
                       {suggestions.map(suggestion => (
-                        <div key={suggestion.id} className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div key={createSafeKey(`suggestion-${suggestion.id}-${suggestion.type}`, 'suggestion')} className="bg-white p-3 rounded-lg border border-gray-200">
                           <div className="flex items-start justify-between mb-2">
                             <span className="text-xs font-medium text-gray-600 uppercase">
                               {suggestion.type.replace('_', ' ')}
