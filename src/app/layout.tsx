@@ -7,7 +7,6 @@ import { NetworkStatus } from '@/components/mobile/NetworkStatus';
 import { Inter } from 'next/font/google'
 import '../styles/design-system.css'
 import { Toaster } from 'react-hot-toast'
-import { mediaContact } from '@/config/media'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +25,6 @@ export const metadata: Metadata = {
   description: "A comprehensive, mobile-first project management solution with advanced voting, dependency tracking, and collaboration features.",
   keywords: ["trello", "project management", "kanban", "productivity", "collaboration"],
   authors: [{ name: "Trello Clone Team" }],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   creator: "Trello Clone",
   publisher: "Trello Clone",
   formatDetection: {
@@ -101,7 +99,6 @@ export const metadata: Metadata = {
         alt: "Trello Clone - Project Management",
       },
     ],
-    contact: mediaContact.email ? { email: mediaContact.email } as any : undefined,
   },
   twitter: {
     card: "summary_large_image",

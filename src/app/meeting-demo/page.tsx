@@ -7,7 +7,6 @@ export const dynamic = 'force-dynamic';
 import React, { useState } from 'react';
 import { MeetingNotesToTasks } from '@/components/meeting/MeetingNotesToTasks';
 import { Brain, FileText, Zap, Target, Users, Clock, CheckCircle, MessageSquare, AlertTriangle } from 'lucide-react';
-import { MediaContactBlock } from '@/components/footer/MediaContact';
 import { Board, List, Card } from '@/types';
 
 export default function MeetingDemoPage() {
@@ -496,7 +495,7 @@ Next Meeting: March 24, 2024`
           </div>
         </div>
 
-        {/* Created Tasks Display */
+        {/* Created Tasks Display */}
         {createdTasks.length > 0 && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
@@ -524,10 +523,6 @@ Next Meeting: March 24, 2024`
             </div>
           </div>
         )}
-        {/* Media Contact */}
-        <div className="mt-12">
-          <MediaContactBlock compact />
-        </div>
       </div>
 
       {/* Meeting Notes Modal */}
